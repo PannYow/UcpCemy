@@ -5,26 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to CEMY Roleplay</title>
     <style>
-        /* Mengimpor font yang lebih sinematik */
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Poppins:wght@300&display=swap');
 
-        /* Keyframes untuk animasi */
-        @keyframes kenburns-zoom {
-            0% { transform: scale(1.1) translateX(0%); }
-            100% { transform: scale(1) translateX(-2%); }
+        :root {
+            --glow-color: hsl(270, 80%, 70%); /* Warna ungu untuk efek cahaya */
         }
 
-        @keyframes text-fade-in {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes subtle-glow {
-            0%, 100% { text-shadow: 0 0 8px #ff8a00, 0 0 10px #e45a03; }
-            50% { text-shadow: 0 0 12px #ff8a00, 0 0 15px #e45a03; }
-        }
-
-        /* Styling utama */
         body, html {
             margin: 0;
             padding: 0;
@@ -32,119 +18,154 @@
             height: 100%;
             overflow: hidden;
             background-color: #000;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .video-banner-container {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .splash-container {
+            position: relative;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
         }
 
-        .video-banner-container::before {
-            content: '';
+        #video-bg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 1;
+            transform: translateX(-50%) translateY(-50%);
+            opacity: 0.3;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+        }
+
+        .title-container {
+            position: relative;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(2.5rem, 10vw, 6rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--glow-color);
+            transform: rotateX(15deg);
+        }
+
+        .title-layer {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
-            z-index: 2;
+            pointer-events: none;
+        }
+        
+        /* Animasi Lapisan Teks */
+        .title-layer:nth-child(1) {
+            color: var(--glow-color);
+            text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color);
+            clip-path: polygon(0% 0%, 100% 0%, 100% 50%, 0% 50%);
+            animation: text-reveal-top 2s 1s ease-out forwards;
+            opacity: 0;
         }
 
-        .background-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('banner-cemy.jpg'); /* <-- PASTIKAN NAMA FILE INI SESUAI */
-            background-size: cover;
-            background-position: center;
-            animation: kenburns-zoom 40s infinite alternate-reverse ease-in-out;
-            z-index: 1;
-        }
-
-        .welcome-content {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            text-align: center;
-            padding: 20px;
+        .title-layer:nth-child(2) {
             color: #fff;
+            clip-path: polygon(0% 50%, 100% 50%, 100% 100%, 0% 100%);
+            animation: text-reveal-bottom 2s 1s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes text-reveal-top {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        .welcome-title {
-            font-family: 'Cinzel', serif;
-            font-size: 4rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: #ffc400;
-            animation: text-fade-in 2s ease-out, subtle-glow 3s infinite alternate ease-in-out;
-            margin: 0;
-        }
-
-        .welcome-subtitle {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.2rem;
-            margin-top: 10px;
-            letter-spacing: 2px;
-            animation: text-fade-in 2.5s ease-out;
+        @keyframes text-reveal-bottom {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .enter-button {
             display: inline-block;
-            margin-top: 40px;
-            padding: 15px 35px;
-            border: 2px solid #ffc400;
-            border-radius: 50px;
-            color: #ffc400;
+            margin-top: 50px;
+            padding: 12px 30px;
+            border: 2px solid var(--glow-color);
+            color: var(--glow-color);
             background-color: transparent;
             text-decoration: none;
             font-family: 'Poppins', sans-serif;
-            font-weight: 600;
+            font-weight: 300;
+            letter-spacing: 2px;
             transition: all 0.3s ease;
-            animation: text-fade-in 3s ease-out;
+            opacity: 0;
+            animation: button-fade-in 1s 3s ease-out forwards;
         }
 
         .enter-button:hover {
-            background-color: #ffc400;
+            background-color: var(--glow-color);
             color: #000;
-            box-shadow: 0 0 20px #ffc400;
+            box-shadow: 0 0 25px var(--glow-color);
         }
-        
-        /* Media query untuk layar kecil (HP) */
-        @media (max-width: 768px) {
-            .welcome-title {
-                font-size: 2.5rem;
-            }
-            .welcome-subtitle {
-                font-size: 1rem;
-            }
-            .enter-button {
-                padding: 12px 28px;
-            }
+
+        @keyframes button-fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="video-banner-container">
-        <div class="background-image"></div>
+    <div class="splash-container" id="splash">
+        <video autoplay muted loop id="video-bg">
+            <source src="https://videos.pexels.com/video-files/857090/857090-hd.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <div class="content-wrapper" id="content">
+            <div class="title-container">
+                CEMY ROLEPLAY
+                <div class="title-layer">CEMY ROLEPLAY</div>
+                <div class="title-layer">CEMY ROLEPLAY</div>
+            </div>
+
+            <a href="/api/oauth-start" class="enter-button">MASUK</a>
+        </div>
     </div>
 
-    <div class="welcome-content">
-        <h1 class="welcome-title">CEMY</h1>
-        <p class="welcome-subtitle">ROLEPLAY</p>
-        <a href="/api/oauth-start" class="enter-button">Masuk & Daftar</a>
-    </div>
+    <script>
+        const splash = document.getElementById('splash');
+        const content = document.getElementById('content');
+
+        splash.addEventListener('mousemove', (e) => {
+            const { clientX, clientY, currentTarget } = e;
+            const { clientWidth, clientHeight } = currentTarget;
+
+            const xRotation = 20 * ((clientY - clientHeight / 2) / clientHeight);
+            const yRotation = -20 * ((clientX - clientWidth / 2) / clientWidth);
+            
+            content.style.transform = `rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+        });
+
+        splash.addEventListener('mouseleave', () => {
+            content.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        });
+    </script>
 
 </body>
 </html>
