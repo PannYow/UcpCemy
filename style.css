@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@700&display=swap');
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -8,11 +8,11 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #1e1e2e; /* Warna latar belakang solid */
-    overflow: hidden; /* Mencegah scroll */
+    background-color: #1a1a2e;
+    overflow: hidden;
 }
 
-/* --- Latar Belakang Partikel --- */
+/* Latar Belakang Partikel */
 #particles-js {
     position: absolute;
     width: 100%;
@@ -20,24 +20,62 @@ body {
     z-index: 1;
 }
 
-/* --- Kontainer Form --- */
+/* Kontainer Utama */
 .container {
-    background-color: rgba(35, 39, 42, 0.85);
-    backdrop-filter: blur(10px);
+    background-color: rgba(26, 26, 46, 0.8);
+    backdrop-filter: blur(8px);
     padding: 40px 50px;
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7);
     text-align: center;
     max-width: 450px;
     width: 90%;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 2; /* Memastikan form di atas partikel */
+    border: 1px solid rgba(128, 128, 255, 0.2);
+    z-index: 2;
+    animation: fadeInUp 0.8s ease-out;
 }
 
-h1 { font-weight: 600; margin-bottom: 10px; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Teks Pengenal Server */
+.server-tagline {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #e0e0ff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #6a6aff, 0 0 20px #6a6aff;
+    animation: text-flicker 4s linear infinite;
+}
+
+@keyframes text-flicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% {
+        text-shadow:
+        0 0 4px #fff,
+        0 0 11px #fff,
+        0 0 19px #fff,
+        0 0 40px #6a6aff,
+        0 0 80px #6a6aff;
+    }
+    20%, 24%, 55% {        
+        text-shadow: none;
+    }
+}
+
+h1 { 
+    font-weight: 600; 
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
 p { color: #b9bbbe; line-height: 1.6; }
 
-/* --- Grup Input Interaktif --- */
+/* Grup Input Interaktif */
 .input-group {
     position: relative;
     margin-bottom: 30px;
@@ -64,41 +102,37 @@ p { color: #b9bbbe; line-height: 1.6; }
     transition: all 0.3s ease;
 }
 
-/* Animasi untuk label saat input di-fokus atau diisi */
 .input-group input:focus + label,
 .input-group input:valid + label {
     top: -15px;
     font-size: 0.8rem;
-    color: #5865f2;
+    color: #a9a9ff;
 }
 
 .input-group input:focus {
-    border-bottom-color: #5865f2;
+    border-bottom-color: #a9a9ff;
 }
 
-/* --- Tombol dengan Animasi Loading --- */
+/* Tombol dengan Animasi Loading */
 button[type="submit"] {
     position: relative;
-    display: inline-block;
     width: 100%;
-    background-color: #5865f2;
+    background: linear-gradient(90deg, #6a6aff, #a9a9ff);
     color: white;
     padding: 15px 30px;
     border: none;
     border-radius: 8px;
-    text-decoration: none;
     font-size: 1rem;
     font-weight: 600;
     margin-top: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
-    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(106, 106, 255, 0.4);
 }
 
 button[type="submit"]:hover {
-    background-color: #4f5bda;
     transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(106, 106, 255, 0.6);
 }
 
 button[type="submit"].loading::after {
