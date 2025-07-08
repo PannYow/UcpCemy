@@ -16,7 +16,8 @@ export default async function handler(req, res) {
 
   try {
     // 1. Tukar 'code' dengan 'access_token'
-    const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', 
+    const tokenResponse = await axios.post(
+      'https://discord.com/api/oauth2/token', // URL LENGKAP DIPINDAHKAN KE SINI
       new URLSearchParams({
         client_id: process.env.DISCORD_CLIENT_ID,
         client_secret: process.env.DISCORD_CLIENT_SECRET,
@@ -40,7 +41,11 @@ export default async function handler(req, res) {
     const { rows } = await pool.query('SELECT discord_id FROM users WHERE discord_id = $1', [discordId]);
 
     if (rows.length > 0) {
-      return res.redirect('/?error=Akun Discord ini sudah terdaftar.');
+      // Jika sudah terdaftar, kembalikan ke halaman utama dengan pesan error
+      // Anda bisa membuat halaman khusus untuk ini jika mau
+      const destination = new URL('/', process.env.ROOT_URL);
+      destination.searchParams.set('error', 'Akun Discord ini sudah terdaftar.');
+      return res.redirect(destination.toString());
     }
 
     // 4. Buat token pendaftaran (JWT)
@@ -55,6 +60,6 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('OAuth Callback Error:', error.response ? error.response.data : error.message);
-    return res.status(500).send('Terjadi kesalahan saat otentikasi dengan Discord.');
+    return res.status(500).send('Terjadi kesalahan saat otentikasi dengan Discord. Periksa kembali Client ID/Secret di Vercel.');
   }
 }
