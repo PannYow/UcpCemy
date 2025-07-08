@@ -7,28 +7,43 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="particles-js"></div>
+
     <div class="container">
         <h1>Selesaikan Pendaftaran Anda</h1>
         <p id="welcome-message"></p>
         <form id="register-form">
             <input type="hidden" id="token" name="token">
+            
             <div class="input-group">
-                <label for="ucp_name">Nama UCP:</label>
                 <input type="text" id="ucp_name" name="ucp_name" required>
+                <label for="ucp_name">Nama UCP</label>
             </div>
+            
             <div class="input-group">
-                <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
             </div>
-            <button type="submit">Buat Akun UCP</button>
+
+            <button type="submit" id="submit-button">
+                <span class="button-text">Buat Akun UCP</span>
+            </button>
         </form>
         <p id="response-message"></p>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
     <script>
+        // Inisialisasi Particles.js
+        particlesJS.load('particles-js', 'assets/particles.json', function() {
+            console.log('callback - particles.js config loaded');
+        });
+
         const form = document.getElementById('register-form');
         const welcomeMessage = document.getElementById('welcome-message');
         const responseMessage = document.getElementById('response-message');
+        const submitButton = document.getElementById('submit-button');
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
         const discordUsername = urlParams.get('username');
@@ -42,10 +57,15 @@
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const buttonText = submitButton.querySelector('.button-text');
+            
+            buttonText.style.display = 'none';
+            submitButton.classList.add('loading');
+            submitButton.disabled = true;
+            responseMessage.innerText = 'Memproses...';
+
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
-            
-            responseMessage.innerText = 'Memproses...';
 
             try {
                 const response = await fetch('/api/register-ucp', {
@@ -63,6 +83,9 @@
                 }
             } catch (error) {
                 responseMessage.innerHTML = `<p style="color: #ff7b7b;">Error: ${error.message}</p>`;
+                submitButton.classList.remove('loading');
+                buttonText.style.display = 'inline';
+                submitButton.disabled = false;
             }
         });
     </script>
