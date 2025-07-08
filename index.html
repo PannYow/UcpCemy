@@ -31,6 +31,16 @@
             align-items: center;
             perspective: 1000px;
         }
+        
+        /* Penambahan untuk container partikel */
+        #tsparticles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1; /* Ditempatkan di antara background dan konten */
+        }
 
         #video-bg {
             position: absolute;
@@ -40,14 +50,14 @@
             min-height: 100%;
             width: auto;
             height: auto;
-            z-index: 1;
+            z-index: 0; /* z-index video diubah jadi 0 */
             transform: translateX(-50%) translateY(-50%);
             opacity: 0.3;
         }
 
         .content-wrapper {
             position: relative;
-            z-index: 2;
+            z-index: 2; /* z-index konten tetap 2 agar di atas segalanya */
             text-align: center;
             transform-style: preserve-3d;
             transition: transform 0.1s ease-out;
@@ -132,6 +142,9 @@
 <body>
 
     <div class="splash-container" id="splash">
+        
+        <div id="tsparticles"></div>
+
         <video autoplay muted loop id="video-bg">
             <source src="https://videos.pexels.com/video-files/857090/857090-hd.mp4" type="video/mp4">
             Your browser does not support the video tag.
@@ -147,6 +160,8 @@
             <a href="/api/oauth-start" class="enter-button">MASUK</a>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 
     <script>
         const splash = document.getElementById('splash');
@@ -165,6 +180,72 @@
         splash.addEventListener('mouseleave', () => {
             content.style.transform = 'rotateX(0deg) rotateY(0deg)';
         });
+
+        // 3. Inisialisasi dan Konfigurasi tsParticles
+        window.addEventListener('load', () => {
+            tsParticles.load("tsparticles", {
+                fpsLimit: 120,
+                background: {
+                    color: {
+                        value: "transparent" // Latar belakang partikel transparan
+                    }
+                },
+                particles: {
+                    number: {
+                        value: 80, // Jumlah partikel
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: "#ffffff" // Warna partikel
+                    },
+                    shape: {
+                        type: "circle"
+                    },
+                    opacity: {
+                        value: 0.5,
+                        random: true
+                    },
+                    size: {
+                        value: 3,
+                        random: true
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1, // Kecepatan gerak partikel
+                        direction: "none",
+                        out_mode: "out",
+                        straight: false
+                    }
+                },
+                interactivity: {
+                    detectsOn: "canvas",
+                    events: {
+                        onHover: {
+                            enable: true,
+                            mode: "repulse" // Partikel akan menjauh dari kursor
+                        },
+                        onClick: {
+                            enable: true,
+                            mode: "push" // Menambah partikel saat di-klik
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        repulse: {
+                            distance: 100
+                        },
+                        push: {
+                            particles_nb: 4
+                        }
+                    }
+                },
+                detectRetina: true
+            });
+        });
+
     </script>
 
 </body>
