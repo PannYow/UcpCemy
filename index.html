@@ -3,14 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran UCP</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Welcome to CEMY Roleplay</title>
+    <style>
+        /* Mengimpor font yang lebih sinematik */
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Poppins:wght@300&display=swap');
+
+        /* Keyframes untuk animasi */
+        @keyframes kenburns-zoom {
+            0% { transform: scale(1.1) translateX(0%); }
+            100% { transform: scale(1) translateX(-2%); }
+        }
+
+        @keyframes text-fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes subtle-glow {
+            0%, 100% { text-shadow: 0 0 8px #ff8a00, 0 0 10px #e45a03; }
+            50% { text-shadow: 0 0 12px #ff8a00, 0 0 15px #e45a03; }
+        }
+
+        /* Styling utama */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .video-banner-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .video-banner-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.8) 100%);
+            z-index: 2;
+        }
+
+        .background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('banner-cemy.jpg'); /* <-- PASTIKAN NAMA FILE INI SESUAI */
+            background-size: cover;
+            background-position: center;
+            animation: kenburns-zoom 40s infinite alternate-reverse ease-in-out;
+            z-index: 1;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .welcome-title {
+            font-family: 'Cinzel', serif;
+            font-size: 4rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #ffc400;
+            animation: text-fade-in 2s ease-out, subtle-glow 3s infinite alternate ease-in-out;
+            margin: 0;
+        }
+
+        .welcome-subtitle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            animation: text-fade-in 2.5s ease-out;
+        }
+
+        .enter-button {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 15px 35px;
+            border: 2px solid #ffc400;
+            border-radius: 50px;
+            color: #ffc400;
+            background-color: transparent;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: text-fade-in 3s ease-out;
+        }
+
+        .enter-button:hover {
+            background-color: #ffc400;
+            color: #000;
+            box-shadow: 0 0 20px #ffc400;
+        }
+        
+        /* Media query untuk layar kecil (HP) */
+        @media (max-width: 768px) {
+            .welcome-title {
+                font-size: 2.5rem;
+            }
+            .welcome-subtitle {
+                font-size: 1rem;
+            }
+            .enter-button {
+                padding: 12px 28px;
+            }
+        }
+
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Selamat Datang di Server Kami</h1>
-        <p>Untuk membuat akun UCP, kita perlu memverifikasi identitas Discord Anda terlebih dahulu.</p>
-        <a href="/api/oauth-start" class="discord-button">Mulai Pendaftaran dengan Discord</a>
+
+    <div class="video-banner-container">
+        <div class="background-image"></div>
     </div>
+
+    <div class="welcome-content">
+        <h1 class="welcome-title">CEMY</h1>
+        <p class="welcome-subtitle">ROLEPLAY</p>
+        <a href="/api/oauth-start" class="enter-button">Masuk & Daftar</a>
+    </div>
+
 </body>
 </html>
