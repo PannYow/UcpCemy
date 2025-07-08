@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selesaikan Pendaftaran</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Selesaikan Pendaftaran Anda</h1>
+        <p id="welcome-message"></p>
+        <form id="register-form">
+            <input type="hidden" id="token" name="token">
+            <div class="input-group">
+                <label for="ucp_name">Nama UCP:</label>
+                <input type="text" id="ucp_name" name="ucp_name" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">Buat Akun UCP</button>
+        </form>
+        <p id="response-message"></p>
+    </div>
+
+    <script>
+        const form = document.getElementById('register-form');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const responseMessage = document.getElementById('response-message');
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        const discordUsername = urlParams.get('username');
+
+        if (token && discordUsername) {
+            document.getElementById('token').value = token;
+            welcomeMessage.innerText = `Halo, ${decodeURIComponent(discordUsername)}! Silakan lengkapi data di bawah.`;
+        } else {
+            form.innerHTML = "<p>Error: Token pendaftaran tidak valid atau tidak ditemukan.</p>";
+        }
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            responseMessage.innerText = 'Memproses...';
+
+            try {
+                const response = await fetch('/api/register-ucp', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    form.style.display = 'none';
+                    welcomeMessage.innerText = 'Pendaftaran Berhasil!';
+                    responseMessage.innerHTML = `<p style="color: lightgreen;">${result.message}</p><p>Silakan periksa DM Anda di Discord untuk mendapatkan PIN.</p>`;
+                } else {
+                    throw new Error(result.message || 'Terjadi kesalahan.');
+                }
+            } catch (error) {
+                responseMessage.innerHTML = `<p style="color: #ff7b7b;">Error: ${error.message}</p>`;
+            }
+        });
+    </script>
+</body>
+</html>
