@@ -1,0 +1,15 @@
+{
+  "name": "ucp-cemy-vercel",
+  "version": "1.0.0",
+  "description": "UCP Registration System",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "mysql2": "^2.3.3",
+    "axios": "^0.27.2",
+    "jsonwebtoken": "^8.5.1",
+    "bcryptjs": "^2.4.3"
+  }
+}
