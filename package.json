@@ -7,9 +7,9 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "mysql2": "^2.3.3",
-    "axios": "^0.27.2",
-    "jsonwebtoken": "^8.5.1",
-    "bcryptjs": "^2.4.3"
+  "axios": "^0.27.2",
+  "bcryptjs": "^2.4.3",
+  "jsonwebtoken": "^8.5.1",
+  "pg": "^8.7.3" 
   }
 }
