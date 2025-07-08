@@ -1,9 +1,60 @@
 import axios from 'axios';
 import jwt from 'jsonwebtoken';
-import mysql from 'mysql2/promise';
+import { Pool } from 'pg';
+
+// Koneksi ke database Neon menggunakan URL
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
 
 export default async function handler(req, res) {
-    // ... (Kode lengkap akan saya berikan di langkah selanjutnya setelah setup Vercel)
-    // Untuk sekarang, kita buat placeholder dulu
-    res.status(200).send("API Callback is working. Code will be added later.");
+  const { code } = req.query;
+
+  if (!code) {
+    return res.status(400).send('Error: Kode otorisasi tidak ditemukan.');
+  }
+
+  try {
+    // 1. Tukar 'code' dengan 'access_token'
+    const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', 
+      new URLSearchParams({
+        client_id: process.env.DISCORD_CLIENT_ID,
+        client_secret: process.env.DISCORD_CLIENT_SECRET,
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: `${process.env.ROOT_URL}/api/oauth-callback`,
+      }), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    });
+
+    const accessToken = tokenResponse.data.access_token;
+
+    // 2. Ambil data user dari Discord
+    const userResponse = await axios.get('https://discord.com/api/users/@me', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    const { id: discordId, username: discordUsername } = userResponse.data;
+
+    // 3. Cek apakah user sudah terdaftar di database
+    const { rows } = await pool.query('SELECT discord_id FROM users WHERE discord_id = $1', [discordId]);
+
+    if (rows.length > 0) {
+      return res.redirect('/?error=Akun Discord ini sudah terdaftar.');
+    }
+
+    // 4. Buat token pendaftaran (JWT)
+    const registrationToken = jwt.sign(
+      { discordId, discordUsername },
+      process.env.JWT_SECRET,
+      { expiresIn: '15m' }
+    );
+
+    // 5. Arahkan user ke formulir
+    res.redirect(`/register.html?token=${registrationToken}&username=${encodeURIComponent(discordUsername)}`);
+
+  } catch (error) {
+    console.error('OAuth Callback Error:', error.response ? error.response.data : error.message);
+    return res.status(500).send('Terjadi kesalahan saat otentikasi dengan Discord.');
+  }
 }
