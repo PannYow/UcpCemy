@@ -31,7 +31,7 @@ body {
     max-width: 450px;
     width: 90%;
     border: 1px solid rgba(128, 128, 255, 0.2);
-    z-index: 2;
+    z-index: 2; /* Form ada di atas partikel */
     animation: fadeInUp 0.8s ease-out;
 }
 
@@ -154,3 +154,74 @@ button[type="submit"].loading::after {
 }
 
 #response-message { margin-top: 20px; font-weight: 600; }
+
+/* CSS UNTUK ORBITING ORBS */
+.orbiting-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(40px);
+    pointer-events: none;
+}
+
+/* Orb 1 (Belakang, Besar, Ungu) */
+#orb1 {
+    width: 400px;
+    height: 400px;
+    background-color: rgba(106, 106, 255, 0.3);
+    z-index: 0;
+    animation: orbit-path-1 35s linear infinite;
+}
+
+/* Orb 2 (Belakang, Sedang, Pink) */
+#orb2 {
+    width: 250px;
+    height: 250px;
+    background-color: rgba(255, 106, 187, 0.2);
+    z-index: 0;
+    animation: orbit-path-2 45s linear infinite;
+}
+
+/* Orb 3 (Depan, Kecil, Biru Terang) */
+#orb3 {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(106, 224, 255, 0.4);
+    z-index: 3;
+    animation: orbit-path-3 25s linear infinite;
+}
+
+/* Orb 4 (Depan, Sangat Kecil, Putih) */
+#orb4 {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: 3;
+    animation: orbit-path-4 20s linear infinite;
+}
+
+/* Keyframes untuk jalur animasi orb */
+@keyframes orbit-path-1 {
+    0%   { transform: translate(10vw, 80vh); }
+    25%  { transform: translate(80vw, 10vh); }
+    50%  { transform: translate(40vw, 90vh); }
+    75%  { transform: translate(90vw, 60vh); }
+    100% { transform: translate(10vw, 80vh); }
+}
+
+@keyframes orbit-path-2 {
+    0%   { transform: translate(90vw, 20vh); }
+    50%  { transform: translate(10vw, 90vh); }
+    100% { transform: translate(90vw, 20vh); }
+}
+
+@keyframes orbit-path-3 {
+    0%   { transform: translate(5vw, 5vh); }
+    50%  { transform: translate(95vw, 95vh); }
+    100% { transform: translate(5vw, 5vh); }
+}
+
+@keyframes orbit-path-4 {
+    0%   { transform: translate(80vw, 80vh); }
+    50%  { transform: translate(20vw, 20vh); }
+    100% { transform: translate(80vw, 80vh); }
+}
